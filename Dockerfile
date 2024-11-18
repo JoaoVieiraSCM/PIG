@@ -11,4 +11,4 @@ RUN chmod 777 mvnw
 
 RUN ./mvnw package
 
-CMD ["java", "-jar", "target/sitebd.war"]
+CMD ["java", "-jar", "target/sitebd-0.0.1-SNAPSHOT.war"]
