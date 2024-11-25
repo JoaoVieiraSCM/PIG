@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Entrar | Cadastrar</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="shortcut icon" href="/imgs/pngwing.com.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-box login">
+            <form id="FormLogin" method="POST" th:action="@{/login}">
+                <h1>Entrar</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Login" name="login" id="Llogin" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Senha" name="senha" id="Lpassword" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <button type="submit" class="btn">Entrar</button>
+            </form>            
+        </div>
+
+        <div class="form-box register">
+            <form id="FormCadastro" method="POST" th:action="@{/cadastro}">
+                <h1>Cadastre-se</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Email" name="login" id="Clogin" required>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <div class="input-box" id="passwordInput">
+                    <input type="password" placeholder="Senha" name="senha" id="Cpassword" required>
+                    <i class='bx bxs-lock-alt'></i>
+                    <i class="fa-solid fa-eye"></i>
+                    <i class="fa-solid fa-eye-slash close"></i>
+                </div>
+                <div class="requirements">
+                    <ul class="requirements-list">
+                        <li id="minLength">A senha deve contar pelo menos 8 caracteres</li>
+                        <li id="hasUppercase">Pelo menos um caracter maiúsculo. ex: A</li>
+                        <li id="hasNumber">Pelo menos um caracter numérico. ex: 0</li>
+                        <li id="hasSpecialChar">Pelo menos um caracter especial. ex: @</li>
+                    </ul>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Confirmar Senha" name="confirm_senha" id="ConfirmCPassword" required>
+                    <i class='bx bxs-lock-alt'></i>
+                    <i class="fa-solid fa-eye"></i>
+                    <i class="fa-solid fa-eye-slash close"></i>
+                </div>
+                <button type="submit" class="btn">Cadastrar</button>
+            </form>
+        </div>
+
+        <div class="toggle-box">
+            <div class="toggle-panel toggle-left">
+                <h1>Olá, Bem Vindo!</h1>
+                <p>Não possui uma conta ainda?</p>
+                <button class="btn register-btn">Cadastre-se</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h1 class="animate__bounce">Bem Vindo de Volta!</h1>
+                <p>Já possui uma conta?</p>
+                <button class="btn login-btn">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!--  sweetalert2 cdn  -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--  efeito cadastro js  -->
+    <script defer src="\js\login-cadastro.js"></script>
+    <script defer src="\js\check.js"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        if ([[${error}]] != null && [[${error}]] != '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: [[${error}]]
+            });
+        }
+        /*]]>*/
+    </script>
+    
+</body>
+
+</html>

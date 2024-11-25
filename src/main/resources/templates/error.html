@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Página de Erro | PIG</title>
+    <link rel="shortcut icon" href="/imgs/pngwing.com.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6ff;
+            color: #333;
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .error-code {
+            font-size: 80px;
+            font-weight: bold;
+            color: #7494ec;
+            animation: pulse 2s infinite;
+        }
+
+        .error-message {
+            font-size: 20px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .error-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #7494ec;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .error-button:hover {
+            background-color: #566bbd;
+        }
+    </style>
+
+    <div class="error-container animate__animated animate__fadeIn">
+        <div class="error-code" id="errorCode">404</div>
+        <div class="error-message" id="errorMessage">Página não encontrada</div>
+        <a th:href="@{/}" class="error-button">Voltar ao Início</a>
+    </div>
+
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        const errorCode = urlParams.get('code');
+        const errorMessage = urlParams.get('message');
+
+        if (errorCode) {
+            document.getElementById('errorCode').innerText = errorCode;
+            document.getElementById('errorMessage').innerText = errorMessage;
+        }
+    </script>
+
+</body>
+</html>

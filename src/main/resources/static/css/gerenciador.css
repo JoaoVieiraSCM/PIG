@@ -1,0 +1,670 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    margin-bottom: 15px;
+    z-index: 1000;
+    max-height: 70px;
+    min-height: 70px;
+    padding: 15px 10%;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    position: absolute;
+    left:50%;
+    transform: translateX(-50%);
+    font-weight: 600;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Navbar principal */
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar li {
+    position: relative;
+}
+
+.navbar div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+    position: relative;
+}
+
+.navbar div::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #7494ec;
+    bottom: -4px;
+    left: 0;
+    transition: width 0.3s;
+}
+
+.navbar div:hover {
+    color: #7494ec;
+    transform: translateY(-2px);
+}
+
+.navbar div:hover::after {
+    width: 100%;
+}
+
+/* Ícones */
+.navbar i {
+    font-size: 20px;
+    color: #333;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.navbar li:hover div {
+    color: #7494ec;
+}
+
+.navbar li:hover i {
+    color: #7494ec;
+    transform: rotate(360deg);
+}
+
+/* Submenus */
+.navbar li ul {
+    list-style: none;
+    position: absolute;
+    top: 113%;
+    left: -8%;
+    display: none;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    border-radius: 8px;
+    z-index: 10;
+}
+
+.navbar li ul li {
+    padding: 8px 16px;
+    white-space: nowrap;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar li ul li i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.navbar li ul li:hover {
+    background-color: #f0f0f0;
+    color: #7494ec;
+}
+
+.navbar li ul ul {
+    left: 100%;
+    top: 0;
+    margin-left: 10px;
+}
+
+.navbar li ul ul {
+    position: absolute;
+    top: 0;
+    left: 93%;
+    margin-left: 10px;
+    display: none;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    border-radius: 8px;
+    z-index: 20;
+}
+
+.navbar li:hover > ul {
+    display: block;
+}
+
+.navbar li ul li:hover > ul {
+    display: block;
+}
+
+.navbar li form button {
+    background: none;
+    border: none;
+    color: inherit; 
+    font-weight: inherit; 
+    font-size: inherit; 
+    cursor: pointer;
+}
+
+.navbar li:hover button {
+    color: inherit;
+}
+
+.navbar li:hover button i {
+    color: #7494ec;
+}
+
+.div-logo {
+    display: flex;
+    align-items: center;
+    max-width: 50px;
+    height: auto;
+}
+
+.div-logo > img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.div-logo > img:hover {
+    transform: scale(1.1);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80vw;
+    min-height: 70vh;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative;
+    margin-bottom: 5vh;
+}
+
+.table-container {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-container thead {
+    background-color: #7494ec;
+    color: #fff;
+}
+
+.table-container th, .table-container td {
+    padding: 12px;
+    text-align: left;
+}
+
+.table-container tbody tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+.table-container tbody tr:hover {
+    background-color: #eef;
+}
+
+.table-container .icon-column {
+    width: 60px;
+    text-align: center;
+}
+
+.table-container .icon-column i {
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.table-container th.icon-column {
+    text-align: center;
+}
+
+.table-container td.icon-column {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.table-container td i.bxs-edit-alt {
+    transition: transform 0.2s ease;
+    color: #7494ec;
+}
+
+.table-container td i.bxs-edit-alt:hover {
+    transform: scale(1.4);
+    color: #4873e7;
+}
+
+.table-container td i.bxs-trash-alt {
+    transition: transform 0.2s ease;
+    color: #d9534f;
+}
+
+.table-container td i.bxs-trash-alt:hover {
+    transform: scale(1.4);
+    color: #ff4747;
+}
+
+.container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background-color: #7494ec;
+    border-radius: 10px;
+}
+
+
+dialog {
+    width: 300px;
+    height: 400px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    justify-content: flex-start;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    align-items: center;
+    border: none;
+    z-index: 1010;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.cards {
+    margin-bottom: 15px;
+    margin-top: 85px;
+    display: flex;
+    gap: 16px;
+    justify-content: flex-start;
+    position: relative;
+    z-index: 10;
+    width: 80vw;
+}
+
+.card {
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: width 0.3s ease;
+    min-width: 150px;
+}
+
+.card h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: rgb(68, 68, 68);
+}
+
+.card p {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.card p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card.total {
+    color: rgb(68, 68, 68);
+}
+
+.card.entries {
+    color: #0a5;
+}
+
+.card.exits {
+    color: #e33;
+}
+
+.card.savings {
+    color: #ff8c00;
+}
+
+.add-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #0a5;
+    color: #fff;
+    font-size: 30px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.add-button:hover {
+    transform: scale(1.1);
+    background: #087;
+}
+
+.add-button:active {
+    box-shadow: none;
+    transform: scale(0.95);
+}
+
+.header-dialog {
+    width: 100%;
+    height: 50px;
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 10px 10px 0 0;
+    color: #57636C;
+}
+.header-dialog h4 {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+.header-dialog button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.6rem;
+    transition: all 0.3s ease;
+    color: #57636C;
+}
+.header-dialog button:hover {
+    transform: scale(1.3);
+}
+dialog form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.container-form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    row-gap: 5px;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.labels {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.labels label {
+    font-size: 0.9rem;
+    color: #000000;
+    margin-bottom: 5px;
+}
+.labels input, .labels select {
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 2px #57636ca8;
+    border-radius: 5px;
+    padding: 0 5px;
+}
+.labels select {
+    cursor: pointer;
+}
+.labels input:focus, .labels select:focus {
+    outline: none;
+}
+dialog form button:not(.add-category-inline):not(.removeCategory):not(.delete-button):not(.save-button) {
+    width: 100%;
+    height: 40px;
+    background-color: #7494ec;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+dialog form button:not(.add-category-inline):not(.removeCategory):not(.delete-button):not(.save-button):hover {
+    background-color: #5f7dc7;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    margin-top: 10px;
+    column-gap: 25%;
+}
+
+.delete-button {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #ff4747;
+}
+
+.save-button {
+    background-color: #0a5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+tr > td[colspan="5"] {
+    width: 100%;
+    height: 100%;
+    display: table-cell;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.save-button:hover {
+    background-color: #087;
+}
+
+.add-category-button {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #5a8dee;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.add-category-button:hover {
+    transform: scale(1.1);
+    background: #3d6fbe;
+}
+
+#addCategoryDialog button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 6px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#addCategoryDialog button[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-category-inline {
+    background: #0a5;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 100%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-category-inline:hover {
+    transform: scale(1.1);
+    background: #087;
+}
+
+/* Lista de categorias */
+.categories-list {
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.categories-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.categories-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 5px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.categories-list li button {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.categories-list li button:hover {
+    background: #c0392b;
+}
+
+@media (max-width: 768px) {
+    .cards {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .card {
+        width: 100%;
+    }
+}

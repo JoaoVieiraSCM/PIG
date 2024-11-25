@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Gerenciador | PIG</title>
+    <link rel="shortcut icon" href="/imgs/pngwing.com.png" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/gerenciador.css">
+</head>
+<body>
+    <header>
+        <div class="div-logo">
+            <img src="/imgs/pngwing.com.png" alt="Porquinho de cofrinho">
+        </div>
+        <h1>Gerenciador de Gastos</h1>
+        <nav class="navbar">
+            <ul>
+                <li>
+                    <div>
+                        <i class='bx bxs-user'></i>
+                        Conta
+                    </div>
+                    <ul class="account">
+                        <li>
+                            <form th:action="@{/logout}" method="post" style="display:inline-block">
+                                <button type="submit" style="display:flex;align-items: center;justify-content: center;">
+                                    <i class='bx bxs-exit'></i>
+                                    Sair
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="cards">
+        <div class="card total">
+            <h4>
+                <i class="bx bxs-wallet"></i> Saldo Total
+            </h4>
+            <p id="saldoTotal" class="valores_monetario" th:text="${saldoTotal != null ? saldoTotal : 0}">R$ 00,00</p>
+        </div>
+        <div class="card entries">
+            <h4>
+                <i class="bx bx-dollar-circle"></i> Total Entradas
+            </h4>
+            <p id="totalEntradas" class="valores_monetario" th:text="${totalEntradas != null ? totalEntradas : 0}">R$ 00,00</p>
+        </div>
+        <div class="card exits">
+            <h4>
+                <i class="bx bx-credit-card"></i> Total Saídas
+            </h4>
+            <p id="totalSaidas" class="valores_monetario" th:text="${totalSaidas != null ? totalSaidas : 0}">R$ 00,00</p>
+        </div>
+    </div>       
+
+    <div class="container">
+        <div class="table-header">
+            <div class="pages">
+                <p>Mostrando registros financeiros 💰</p>
+            </div>
+        </div>
+        <table class="table-container">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                    <th>Tipo</th>
+                    <th class="icon-column">Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${gastos == null or gastos.size() == 0}">
+                    <td colspan="5">Nenhum registro encontrado</td>
+                </tr>
+                <tr th:each="gasto : ${gastos}" th:if="${gastos.size() > 0}">
+                    <td th:text="${gasto.ds_descricao != null ? gasto.ds_descricao : 'Descrição não disponível'}"></td>
+                    <td th:text="${gasto.ds_categoria != null ? gasto.ds_categoria : 'Categoria não definida'}"></td>
+                    <td class="valores_monetario" th:text="${gasto.vl_valor != null ? gasto.vl_valor : '0.00'}"></td>
+                    <td th:text="${gasto.ic_tipo != null ? (gasto.ic_tipo ? 'Saída' : 'Entrada') : 'Tipo não definido'}"></td>
+                    <td class="icon-column">
+                        <i class="bx bxs-edit-alt" 
+                           th:onclick="'openModal(\'editDialog\', \'' + ${gasto.cd_id} + '\')'"></i>
+                    </td>                                      
+                </tr>
+            </tbody>
+        </table>        
+    </div>
+
+    <button class="add-button" onclick="openModal('registerDialog')">+</button>
+
+    <!-- Modal de registro -->
+    <dialog id="registerDialog" class="modal">
+        <div class="header-dialog">
+            <h4>Adicionar Registro</h4>
+            <button onclick="closeModal('registerDialog')"><i class='bx bx-x' ></i></button>
+        </div>
+        <form th:action="@{/gastos/adicionar}" method="post">
+            <div class="container-form">
+                <div class="labels">
+                    <label for="descriptionRegister">Título do Registro</label>
+                    <input type="text" name="description" id="descriptionRegister" placeholder="Descrição do Gasto..." required>
+                </div>
+                <div class="labels">
+                    <label for="valueRegister">Valor R$</label>
+                    <input type="text" name="value" id="valueRegister" oninput="formatarDinheiroInput(this)" placeholder="00,00" required>
+                </div>
+                <div class="labels">
+                    <label for="ds_categoria">Categoria</label>
+                    <select id="ds_categoriaRegister" name="category" class="form-control">
+                        <option value="" disabled selected>Selecione uma categoria</option>
+                        <option value="Alimentação">Alimentação</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Saúde">Saúde</option>
+                        <option value="Educação">Educação</option>
+                        <option value="Lazer">Lazer</option>
+                        <option value="Moradia">Moradia</option>
+                        <option value="Seguros">Seguros</option>
+                        <option value="Impostos">Impostos</option>
+                        <option value="Utilidades">Utilidades</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+                <div class="labels">
+                    <label for="typeRegister">Tipo</label>
+                    <select name="type" id="typeRegister" required>
+                        <option value="" disabled selected>Entrada / Saída</option>
+                        <option value="false">Entrada</option>
+                        <option value="true">Saída</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Adicionar Registro</button>
+        </form>
+    </dialog>
+
+    <!-- Modal de edição -->
+    <dialog id="editDialog" class="modal" th:if="${gastos.size() > 0}">
+        <div class="header-dialog">
+            <h4>Editar Registro</h4>
+            <button onclick="closeModal('editDialog')"><i class='bx bx-x'></i></button>
+        </div>
+        <form method="post" id="editForm">
+            <div class="container-form">
+                <div class="labels">
+                    <label for="descriptionEdit">Título do Registro</label>
+                    <input type="text" name="ds_descricao" id="descriptionEdit" required>
+                </div>            
+                <div class="labels">
+                    <label for="valueEdit">Valor R$</label>
+                    <input type="text" name="vl_valor" id="valueEdit" oninput="formatarDinheiroInput(this)" required>
+                </div>
+                <div class="labels">
+                    <label for="ds_categoria">Categoria</label>
+                    <select id="ds_categoria" name="ds_categoria" class="form-control">
+                        <option value="" disabled th:selected="${gasto != null && gasto.ds_categoria == null}">Selecione uma categoria</option>
+                        <option value="Alimentação" th:selected="${gasto != null && gasto.ds_categoria == 'Alimentação'}">Alimentação</option>
+                        <option value="Transporte" th:selected="${gasto != null && gasto.ds_categoria == 'Transporte'}">Transporte</option>
+                        <option value="Saúde" th:selected="${gasto != null && gasto.ds_categoria == 'Saúde'}">Saúde</option>
+                        <option value="Educação" th:selected="${gasto != null && gasto.ds_categoria == 'Educação'}">Educação</option>
+                        <option value="Lazer" th:selected="${gasto != null && gasto.ds_categoria == 'Lazer'}">Lazer</option>
+                        <option value="Moradia" th:selected="${gasto != null && gasto.ds_categoria == 'Moradia'}">Moradia</option>
+                        <option value="Seguros" th:selected="${gasto != null && gasto.ds_categoria == 'Seguros'}">Seguros</option>
+                        <option value="Impostos" th:selected="${gasto != null && gasto.ds_categoria == 'Impostos'}">Impostos</option>
+                        <option value="Utilidades" th:selected="${gasto != null && gasto.ds_categoria == 'Utilidades'}">Utilidades</option>
+                        <option value="Outros" th:selected="${gasto != null && gasto.ds_categoria == 'Outros'}">Outros</option>
+                    </select>
+                </div>                
+                <div class="labels">
+                    <label for="typeEdit">Tipo</label>
+                    <select name="ic_tipo" id="typeEdit" required>
+                        <option value="" disabled selected>Entrada / Saída</option>
+                        <option value="false">Entrada</option>
+                        <option value="true">Saída</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-footer" id="form-footer">
+            </div>                
+        </form>
+    </dialog>
+
+    <script>
+        function openModal(id, idGasto = null) {
+            let dialog = document.getElementById(id);
+            dialog.style.display = 'flex';
+            dialog.showModal();
+
+            dialog.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    event.preventDefault();
+                    closeModal(id);
+                }
+            });
+
+            if (id === 'editDialog' && idGasto) {
+                let buttons = document.getElementById('form-footer');
+                buttons.innerHTML = `
+                    <button type="button" id="delete-button" class="delete-button" onclick="deletarForm(${idGasto})">Deletar</button>
+                    <button type="button" id="save-button" class="save-button" onclick='editarForm(${idGasto})'>Salvar</button>
+                `;
+
+                fetch(`/api/gastos/${idGasto}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Erro ao buscar gasto: ${response.statusText}`);
+                        }
+                        return response.json();
+                    })
+                    .then(gasto => {
+                        if (!gasto) {
+                            throw new Error("Gasto não encontrado.");
+                        }
+                        console.log(gasto);
+                        document.getElementById('descriptionEdit').value = gasto.ds_descricao || '';
+                        document.getElementById('valueEdit').value = gasto.vl_valor 
+                        ? String(gasto.vl_valor).replace('.', ',') 
+                        : '00,00';
+                        document.getElementById('ds_categoria').value = gasto.ds_categoria || '';
+                        document.getElementById('typeEdit').value = gasto.ic_tipo ? 'true' : 'false';
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro',
+                            text: 'Não foi possível carregar os dados do gasto.'
+                        });
+                    });
+            }
+        }
+
+        function closeModal(id) {
+            let dialog = document.getElementById(id);
+            let inputs = dialog.querySelectorAll('input');
+            let selects = dialog.querySelectorAll('select');
+            selects.forEach(select => select.selectedIndex = 0);
+            inputs.forEach(input => input.value = '');
+            dialog.style.display = 'none';
+            dialog.close();
+        }
+
+        function editarForm(id) {
+            const form = document.getElementById('editForm');
+            const formData = new FormData(form);
+
+            const dataObj = {};
+
+            formData.forEach((value, key) => {
+                if (key === 'vl_valor') {
+                    value = value.replace(',', '.');
+                }
+                dataObj[key] = value;
+            });
+
+            dataObj.id = id;
+
+            console.log("DataObj:", dataObj);
+            console.log(JSON.stringify(dataObj));
+
+            fetch(`/gastos/editar/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataObj),
+            })
+                .then(data => {
+                    console.log("Sucesso:", data);
+                    closeModal('editDialog');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: 'Gasto editado com sucesso.',
+                        confirmButtonText: 'Ok'
+                    }).then(() => window.location.reload());
+                })
+        }
+
+        function deletarForm(id) {
+            closeModal('editDialog');
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Você não poderá reverter esta ação!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, deletar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/gastos/deletar/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            Swal.fire(
+                                'Deletado!',
+                                'O gasto foi deletado com sucesso.',
+                                'success'
+                            ).then(() => {
+                                closeModal('editDialog');
+                                window.location.reload();
+                            });
+                        } else {
+                            throw new Error('Erro ao deletar');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        Swal.fire(
+                            'Erro!',
+                            'Não foi possível deletar o gasto.',
+                            'error'
+                        );
+                    });
+                }
+            });
+        }
+
+        function formatarDinheiroInput(input) {
+            let valor = input.value.replace(/\D/g, '');
+            valor = (valor / 100).toFixed(2);
+            valor = valor.replace('.', ',');
+            
+            valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            
+            input.value = valor;
+        }
+
+
+        function formatarDinheiroElemento(elemento) {
+            let valor = parseFloat(elemento.innerText.replace(/[^0-9.-]/g, ''));
+
+            if (isNaN(valor)) {
+                elemento.innerText = 'R$ 00,00';
+                return;
+            }
+
+            let negativo = valor < 0;
+            valor = Math.abs(valor).toFixed(2);
+
+            let partes = valor.split(".");
+            let inteiro = partes[0];
+            let decimal = partes[1];
+
+            inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+            if (negativo) {
+                elemento.innerText = "R$ - " + inteiro + "," + decimal;
+            } else {
+                elemento.innerText = "R$ " + inteiro + "," + decimal;
+            }
+        }
+
+
+
+        document.querySelectorAll('.valores_monetario').forEach(function(element) {
+            if (element) {
+                formatarDinheiroElemento(element);
+            } else {
+                element.innerText = 'R$ 00,00';
+            }
+        });
+    </script>
+    <!--  sweetalert2 cdn  -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
