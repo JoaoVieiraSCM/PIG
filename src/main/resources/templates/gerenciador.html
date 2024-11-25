@@ -252,7 +252,7 @@
 
             formData.forEach((value, key) => {
                 if (key === 'vl_valor') {
-                    value = value.replace(/\./g, '').replace(',', '.');
+                    value = value.replace(',', '.');
                 }
                 dataObj[key] = value;
             });
